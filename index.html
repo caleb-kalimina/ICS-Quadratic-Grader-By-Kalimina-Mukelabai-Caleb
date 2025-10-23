@@ -119,73 +119,86 @@
     <div id="gradeResult" class="result"></div>
   </form>
 
-  <script>
-    // 🧮 Function to solve a quadratic equation
-    function solveQuadratic() {
-      const a = parseFloat(document.getElementById("a").value);
-      const b = parseFloat(document.getElementById("b").value);
-      const c = parseFloat(document.getElementById("c").value);
-      const resultDiv = document.getElementById("quadResult");
+<script>
+  // 🧮 Function to solve a quadratic equation with steps
+  function solveQuadratic() {
+    const a = parseFloat(document.getElementById("a").value);
+    const b = parseFloat(document.getElementById("b").value);
+    const c = parseFloat(document.getElementById("c").value);
+    const resultDiv = document.getElementById("quadResult");
 
-      // Clear old results
-      resultDiv.innerHTML = "";
+    // Clear old results
+    resultDiv.innerHTML = "";
 
-      // Validate inputs
-      if (isNaN(a) || isNaN(b) || isNaN(c)) {
-        resultDiv.innerHTML = "<div class='error'>Please enter valid numbers for a, b, and c.</div>";
-        return;
-      }
-
-      if (a === 0) {
-        resultDiv.innerHTML = "<div class='error'>‘a’ cannot be 0 for a quadratic equation.</div>";
-        return;
-      }
-
-      // Calculate discriminant
-      const D = b * b - 4 * a * c;
-      let output = <p>Discriminant (D) = ${D.toFixed(2)}</p>;
-
-      // Determine nature of roots
-      if (D > 0) {
-        const x1 = (-b + Math.sqrt(D)) / (2 * a);
-        const x2 = (-b - Math.sqrt(D)) / (2 * a);
-        output += <p>Two distinct real roots: x₁ = ${x1.toFixed(2)}, x₂ = ${x2.toFixed(2)}</p>;
-      } else if (D === 0) {
-        const x = -b / (2 * a);
-        output += <p>One real repeated root: x = ${x.toFixed(2)}</p>;
-      } else {
-        const real = (-b / (2 * a)).toFixed(2);
-        const imag = (Math.sqrt(-D) / (2 * a)).toFixed(2);
-        output += <p>Complex roots: ${real} ± ${imag}i</p>;
-      }
-
-      resultDiv.innerHTML = output;
+    // Validate inputs
+    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+      resultDiv.innerHTML = "<div class='error'>Please enter valid numbers for a, b, and c.</div>";
+      return;
     }
 
-    // 🧾 Function to check grade based on score
-    function checkGrade() {
-      const score = parseInt(document.getElementById("score").value);
-      const resultDiv = document.getElementById("gradeResult");
-      resultDiv.innerHTML = "";
-
-      if (isNaN(score) || score < 0 || score > 100) {
-        resultDiv.innerHTML = "<div class='error'>Enter a valid score between 0 and 100.</div>";
-        return;
-      }
-
-      let grade = "";
-      if (score >= 85) grade = "A+";
-      else if (score >= 75) grade = "A";
-      else if (score >= 65) grade = "B+";
-      else if (score >= 60) grade = "B";
-      else if (score >= 55) grade = "C+";
-      else if (score >= 50) grade = "C";
-      else grade = "D";
-
-      resultDiv.innerHTML = <p>Score ${score} → Grade ${grade}</p>;
+    if (a === 0) {
+      resultDiv.innerHTML = "<div class='error'>'a' cannot be 0 for a quadratic equation.</div>";
+      return;
     }
-  </script>
+
+    // Step-by-step explanation
+    let steps = `<p><strong>Step 1:</strong> Identify coefficients: a = ${a}, b = ${b}, c = ${c}</p>`;
+
+    // Calculate discriminant
+    const D = b * b - 4 * a * c;
+    steps += `<p><strong>Step 2:</strong> Calculate the discriminant: D = b² - 4ac = ${b}² - 4×${a}×${c} = ${D.toFixed(2)}</p>`;
+
+    // Determine nature of roots
+    if (D > 0) {
+      const x1 = (-b + Math.sqrt(D)) / (2 * a);
+      const x2 = (-b - Math.sqrt(D)) / (2 * a);
+      steps += `<p><strong>Step 3:</strong> Since D > 0, the equation has two distinct real roots.</p>`;
+      steps += `<p><strong>Step 4:</strong> Use the quadratic formula:</p>`;
+      steps += `<p>x = (-b ± √D) / (2a)</p>`;
+      steps += `<p>x₁ = (${ -b } + √${ D.toFixed(2) }) / (2×${ a }) = ${ x1.toFixed(2) }</p>`;
+      steps += `<p>x₂ = (${ -b } - √${ D.toFixed(2) }) / (2×${ a }) = ${ x2.toFixed(2) }</p>`;
+    } else if (D === 0) {
+      const x = -b / (2 * a);
+      steps += `<p><strong>Step 3:</strong> Since D = 0, the equation has one real repeated root.</p>`;
+      steps += `<p><strong>Step 4:</strong> x = -b / (2a) = ${ -b } / (2×${ a }) = ${ x.toFixed(2) }</p>`;
+    } else {
+      const real = (-b / (2 * a)).toFixed(2);
+      const imag = (Math.sqrt(-D) / (2 * a)).toFixed(2);
+      steps += `<p><strong>Step 3:</strong> Since D < 0, the equation has two complex roots.</p>`;
+      steps += `<p><strong>Step 4:</strong> x = (-b ± √D) / (2a)</p>`;
+      steps += `<p>Since D is negative, √D = √(${ D.toFixed(2) }) = ${ imag }i</p>`;
+      steps += `<p>x₁ = ${ real } + ${ imag }i</p>`;
+      steps += `<p>x₂ = ${ real } - ${ imag }i</p>`;
+    }
+
+    resultDiv.innerHTML = steps;
+  }
+
+  // 🧾 Function to check grade based on score
+  function checkGrade() {
+    const score = parseInt(document.getElementById("score").value);
+    const resultDiv = document.getElementById("gradeResult");
+    resultDiv.innerHTML = "";
+
+    if (isNaN(score) || score < 0 || score > 100) {
+      resultDiv.innerHTML = "<div class='error'>Enter a valid score between 0 and 100.</div>";
+      return;
+    }
+
+    let grade = "";
+    if (score >= 85) grade = "A+";
+    else if (score >= 75) grade = "A";
+    else if (score >= 65) grade = "B+";
+    else if (score >= 60) grade = "B";
+    else if (score >= 55) grade = "C+";
+    else if (score >= 50) grade = "C";
+    else grade = "D";
+
+    resultDiv.innerHTML = `<p>Score ${score} → Grade ${grade}</p>`;
+  }
+</script>
 
 </body>
 
 </html>
+
