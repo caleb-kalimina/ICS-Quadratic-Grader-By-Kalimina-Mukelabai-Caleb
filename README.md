@@ -66,5 +66,6 @@ Example:
 ---
 
 ## 👨‍💻 Author
-*Mbangweta Isaiah*
+*Kalimina Mukelabai Caleb*
+
 ICT251 — Web Technologies
